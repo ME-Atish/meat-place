@@ -23,10 +23,6 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get()
-  getAll(): Promise<User[]> {
-    return this.authService.getAll();
-  }
-
   @UseGuards(AccessTokenGuard)
   @Get('/me')
   getMe(@Req() req): User {

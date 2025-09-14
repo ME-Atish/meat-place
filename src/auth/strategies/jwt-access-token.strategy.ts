@@ -28,6 +28,8 @@ export class AccessTokenStrategy extends PassportStrategy(
 
     if (!user) throw new UnauthorizedException();
 
+    if (user.isBan) throw new UnauthorizedException();
+
     return user;
   }
 }

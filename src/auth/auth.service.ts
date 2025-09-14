@@ -38,11 +38,6 @@ export class AuthService {
     private readonly generateRandomCode: GenerateRandomCode,
   ) {}
 
-  async getAll(): Promise<User[]> {
-    const users = await this.authRepository.find();
-    return users;
-  }
-
   async register(createUserDto: CreateUserDto): Promise<void> {
     const { username, firstName, lastName, email, phone, password } =
       createUserDto;
