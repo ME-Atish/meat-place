@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm';
-import { User } from './auth/user.entity';
-import { Place } from './place/place.entity';
-import { Wallet } from './wallet/wallet.entity';
-import { Reserve } from './reserve/reserve.entity';
+import { User } from '../modules/auth/user.entity';
+import { Place } from '../modules/place/place.entity';
+import { Wallet } from '../modules/wallet/wallet.entity';
+import { Reserve } from '../modules/reserve/reserve.entity';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',

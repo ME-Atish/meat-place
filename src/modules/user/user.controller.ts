@@ -13,8 +13,8 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 
 import { UserService } from './user.service';
-import { User } from 'src/auth/user.entity';
-import { CreateUserDto } from 'src/auth/dto/create-user.dto';
+import { User } from 'src/modules/auth/user.entity';
+import { CreateUserDto } from 'src/modules/auth/dto/create-user.dto';
 
 @Controller(`v${process.env.VERSION}/user`)
 @UseGuards(AuthGuard('jwt-access'))

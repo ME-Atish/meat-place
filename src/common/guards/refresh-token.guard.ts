@@ -9,7 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { User } from '../../auth/user.entity';
+import { User } from '../../modules/auth/user.entity';
 
 @Injectable()
 export class RefreshTokenGuard extends AuthGuard('jwt-refresh') {

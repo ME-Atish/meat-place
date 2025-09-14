@@ -18,10 +18,10 @@ dotenv.config();
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LoginUserDto } from './dto/login-user.dto';
-import { Wallet } from 'src/wallet/wallet.entity';
-import { TokenService } from 'src/tokens/token.service';
+import { Wallet } from 'src/modules/wallet/wallet.entity';
+import { TokenService } from 'src/modules/tokens/token.service';
 import { EmailValidatorDto } from './dto/email-validator.dto';
-import { GenerateRandomCode } from 'src/utils/generate-random-code';
+import { GenerateRandomCode } from '../../common/utils/generate-random-code';
 import { VerifyEmailCodeDto } from './dto/verify-email-code.dto';
 
 @Injectable()

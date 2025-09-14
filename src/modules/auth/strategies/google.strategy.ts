@@ -5,7 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { User } from '../user.entity';
-import { Wallet } from 'src/wallet/wallet.entity';
+import { Wallet } from 'src/modules/wallet/wallet.entity';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {

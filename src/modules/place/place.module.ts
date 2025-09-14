@@ -4,7 +4,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
-import { User } from 'src/auth/user.entity';
+import { User } from 'src/modules/auth/user.entity';
 import { Place } from './place.entity';
 import { PlaceService } from './place.service';
 import { PlaceController } from './place.controller';

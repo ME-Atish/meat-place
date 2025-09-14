@@ -8,10 +8,10 @@ import { AuthController } from './auth.controller';
 import { User } from './user.entity';
 import { AccessTokenStrategy } from './strategies/jwt-access-token.strategy';
 import { RefreshTokenStrategy } from './strategies/jwt-refresh-token.strategy';
-import { Wallet } from 'src/wallet/wallet.entity';
-import { TokenModule } from 'src/tokens/token.module';
-import { AccessTokenGuard } from '../common/guards/access-token.guard';
-import { GenerateRandomCode } from 'src/utils/generate-random-code';
+import { Wallet } from 'src/modules/wallet/wallet.entity';
+import { TokenModule } from 'src/modules/tokens/token.module';
+import { AccessTokenGuard } from '../../common/guards/access-token.guard';
+import { GenerateRandomCode } from '../../common/utils/generate-random-code';
 import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({

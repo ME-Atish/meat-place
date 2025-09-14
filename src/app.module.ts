@@ -8,17 +8,17 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 import { MailerModule } from '@nestjs-modules/mailer';
 
-import { AppDataSource } from './data-source';
-import { AuthModule } from './auth/auth.module';
-import { WalletModule } from './wallet/wallet.module';
-import { PlaceModule } from './place/place.module';
-import { ReserveModule } from './reserve/reserve.module';
-import { UserModule } from './user/user.module';
-import { IsOwnerMiddleware } from './middleware/is-owner.middleware';
-import { PlaceController } from './place/place.controller';
-import { IsAdminMiddleware } from './middleware/is-admin.middleware';
-import { UserController } from './user/user.controller';
-import { RedisModule } from './redis/redis.module';
+import { AppDataSource } from './database/data-source';
+import { AuthModule } from './modules/auth/auth.module';
+import { WalletModule } from './modules/wallet/wallet.module';
+import { PlaceModule } from './modules/place/place.module';
+import { ReserveModule } from './modules/reserve/reserve.module';
+import { UserModule } from './modules/user/user.module';
+import { IsOwnerMiddleware } from './common/middleware/is-owner.middleware';
+import { PlaceController } from './modules/place/place.controller';
+import { IsAdminMiddleware } from './common/middleware/is-admin.middleware';
+import { UserController } from './modules/user/user.controller';
+import { RedisModule } from './modules/redis/redis.module';
 
 dotenv.config();
 

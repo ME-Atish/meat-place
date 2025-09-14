@@ -6,8 +6,8 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { User } from 'src/auth/user.entity';
-import { Place } from 'src/place/place.entity';
+import { User } from 'src/modules/auth/user.entity';
+import { Place } from 'src/modules/place/place.entity';
 
 @Entity()
 export class Reserve {

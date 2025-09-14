@@ -3,8 +3,8 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Place } from './place.entity';
-import { CreatePlaceDto } from 'src/place/dto/create-place.dto';
-import { User } from 'src/auth/user.entity';
+import { CreatePlaceDto } from 'src/modules/place/dto/create-place.dto';
+import { User } from 'src/modules/auth/user.entity';
 
 @Injectable()
 export class PlaceService {

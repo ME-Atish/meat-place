@@ -9,9 +9,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Reserve } from './reserve.entity';
-import { Place } from 'src/place/place.entity';
-import { User } from 'src/auth/user.entity';
-import { Wallet } from 'src/wallet/wallet.entity';
+import { Place } from 'src/modules/place/place.entity';
+import { User } from 'src/modules/auth/user.entity';
+import { Wallet } from 'src/modules/wallet/wallet.entity';
 
 @Injectable()
 export class ReserveService {
