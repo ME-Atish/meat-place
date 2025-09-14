@@ -50,7 +50,7 @@ export class PlaceController {
   }
 
   @Post()
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file')) // Allow upload file
   create(
     @Body() createPlaceDto: CreatePlaceDto,
     @Req() req,
@@ -70,7 +70,7 @@ export class PlaceController {
   }
 
   @Put('/:id')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file')) // Allow upload file
   update(
     @Req() req,
     @Param('id', ParseUUIDPipe) placeId: string,

@@ -29,13 +29,17 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     profile: any,
     done: VerifyCallback,
   ): Promise<any> {
+    // Get email from google account of client/user
     const email = profile.emails[0].value;
 
     const user = await this.userRepository.findOne({ where: { email } });
     if (user) return done(null, user);
 
+    // Get first name from google
     const firstName = profile.name?.givenName;
+    // Get last name from google
     const lastName = profile.name?.familyName || `${firstName}Family`;
+    // Set username for client/user that registered with google account
     const username =
       // eslint-disable-next-line no-useless-escape
       `${firstName} ${lastName}`.replace(/[\.-]/, '') +
@@ -49,6 +53,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     });
     const savedUser = await this.userRepository.save(newUser);
 
+    // Create wallet for user
     const wallet = this.walletRepository.create({ user: savedUser });
     await this.walletRepository.save(wallet);
 

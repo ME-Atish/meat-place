@@ -50,8 +50,10 @@ export class PlaceService {
     if (!user)
       throw new NotFoundException('user not found, please check access token');
 
+    // Update isOwner field in user entity when normal user register place
     await this.userRepository.update(user.id, { isOwner: true });
 
+    // Update owner field
     createPlace.owner = user;
 
     await this.placeRepository.save(createPlace);
@@ -102,6 +104,7 @@ export class PlaceService {
       image: originalname,
     });
 
+    // place.affected === 0 means no raw column were updated, so no place was found
     if (place.affected === 0) throw new NotFoundException();
 
     return;

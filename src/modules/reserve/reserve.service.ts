@@ -38,6 +38,7 @@ export class ReserveService {
   }
 
   async reservePlace(placeId: string, userId: string): Promise<void> {
+    // Find place for check somethings like is place exist or is place already reserved or not
     const placeInfo = await this.placeRepository.findOne({
       where: { id: placeId },
     });
@@ -47,6 +48,7 @@ export class ReserveService {
     if (placeInfo.isReserved)
       throw new ConflictException('Place already reserved');
 
+    // Find user for check somethings like is user exist or is user already reserved any place or not
     const userInfo = await this.userRepository.findOne({
       where: { id: userId },
     });
@@ -81,6 +83,7 @@ export class ReserveService {
 
     if (!findReservation) throw new NotFoundException('Reservation not found');
 
+    //  Find place
     const findPlaceForCancelReservation = await this.placeRepository.findOne({
       where: { id: findReservation.place.id },
     });
@@ -88,32 +91,38 @@ export class ReserveService {
     if (!findPlaceForCancelReservation)
       throw new NotFoundException('Place not found');
 
+    // Set isReserved column to false which is means this place not reserved
     await this.placeRepository.update(findPlaceForCancelReservation.id, {
       isReserved: false,
     });
 
+    // Find user
     const findUserForCancelReservation = await this.userRepository.findOne({
       where: { id: findReservation.user.id },
     });
     if (!findUserForCancelReservation)
       throw new NotFoundException('User not found');
 
+    // Set isReserved column to false which is means user doesn't reserved any place
     await this.userRepository.update(findUserForCancelReservation.id, {
       isReserved: false,
     });
 
+    // Pay back money (money payback into user's wallet)
     const placePrice = findPlaceForCancelReservation.price;
     const penalty = Math.floor(placePrice * 0.8);
 
+    // Find user's wallet
     const userWallet = await this.walletRepository.findOne({
       where: {
         user: { id: findUserForCancelReservation.id },
       },
     });
-    console.log(userWallet);
+
     if (!userWallet)
       throw new NotFoundException('Wallet not found. It is internal err');
 
+    // Update amount column
     userWallet.amount += penalty;
     await this.walletRepository.save(userWallet);
     await this.reserveRepository.remove(findReservation);
@@ -133,6 +142,7 @@ export class ReserveService {
         'wallet not found. check registration process',
       );
 
+    //  Find place to reserve
     const findPlace = await this.placeRepository.findOne({
       where: {
         id: placeId,
@@ -140,9 +150,11 @@ export class ReserveService {
     });
 
     if (!findPlace) throw new NotFoundException('place not found');
+
     if (findPlace.isReserved)
       throw new ConflictException('place already registered');
 
+    // Find user that want reserve a place
     const findUser = await this.userRepository.findOne({
       where: {
         id: userId,
@@ -150,10 +162,13 @@ export class ReserveService {
     });
 
     if (!findUser) throw new NotFoundException('user not found');
+
     if (findUser.isReserved)
       throw new ConflictException('user already reserved');
 
+    // Store wallet balance that user had it
     const walletBalance = findUserWallet.amount;
+    // Store place price
     const placePrice = findPlace.price;
 
     if (placePrice > walletBalance) {
@@ -163,8 +178,10 @@ export class ReserveService {
       );
     }
 
+    // Update columns to true which is means place reserved and user reserved a place
     findPlace.isReserved = true;
     findUser.isReserved = true;
+    // Update amount of wallet
     findUserWallet.amount -= placePrice;
 
     await this.placeRepository.save(findPlace);

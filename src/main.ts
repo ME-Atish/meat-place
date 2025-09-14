@@ -8,6 +8,7 @@ async function bootstrap() {
   dotenv.config();
 
   const app = await NestFactory.create(AppModule);
+  // Configure Swagger API Doc
   const config = new DocumentBuilder()
     .setTitle('Me.at Place API')
     .setDescription('API documentation for Me.at Place project')

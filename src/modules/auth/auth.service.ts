@@ -70,6 +70,7 @@ export class AuthService {
     });
     await this.authRepository.save(user);
 
+    // Create wallet for user
     const wallet = this.walletRepository.create({
       user,
     });
@@ -81,6 +82,7 @@ export class AuthService {
   async login(loginUserDto: LoginUserDto): Promise<object> {
     const { identifier, password } = loginUserDto;
 
+    // Find user with identifier that can be username or email
     const user = await this.authRepository
       .createQueryBuilder('user')
       .addSelect('user.password')
@@ -97,6 +99,7 @@ export class AuthService {
     const refreshToken = await this.tokenService.refreshToken(user);
 
     const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+    // Updata refresh token
     user.refreshToken = hashedRefreshToken;
     await this.authRepository.save(user);
 
@@ -113,11 +116,13 @@ export class AuthService {
 
     if (!user) throw new NotFoundException();
 
+    //  Set refresh token to null for logout
     await this.authRepository.update(user.id, { refreshToken: null as any });
     return;
   }
 
   async loginWithEmail(emailValidatorDto: EmailValidatorDto): Promise<void> {
+    // to= client's/user's email
     const { to } = emailValidatorDto;
 
     const findUser = await this.authRepository.findOne({
@@ -128,9 +133,12 @@ export class AuthService {
 
     if (!findUser) return;
 
+    // Generate random code for send to client's/user's email
     const code = this.generateRandomCode.randomCode();
+    // Store code in redis
     await this.redis.set(`login-code:${to}`, code, 'EX', 60 * 5);
 
+    // Send login code to client/user
     await this.mailService.sendMail({
       subject: `You're code to login`,
       from: `${process.env.EMAIL}`,
@@ -141,18 +149,22 @@ export class AuthService {
   }
 
   async verifyCode(verifyEmailCodeDto: VerifyEmailCodeDto): Promise<object> {
+    // to= client's/user's email
     const { to, code } = verifyEmailCodeDto;
 
     const user = await this.authRepository.findOne({ where: { email: to } });
     if (!user) throw new ForbiddenException('please try again');
 
+    // Get code that generated
     const storedCode = await this.redis.get(`login-code:${to}`);
 
     if (storedCode === code) {
       const accessToken = await this.tokenService.accessToken(user);
       const refreshToken = await this.tokenService.refreshToken(user);
 
-      user.refreshToken = refreshToken;
+      const hashedPassword = await bcrypt.hash(refreshToken, 10);
+      // Update refresh token
+      user.refreshToken = hashedPassword;
       await this.authRepository.save(user);
 
       await this.redis.del(`login-code:${to}`);

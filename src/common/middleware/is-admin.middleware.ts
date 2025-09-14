@@ -19,7 +19,7 @@ export class IsAdminMiddleware implements NestMiddleware {
     if (!authHeader) {
       throw new UnauthorizedException('No authorization header provided');
     }
-
+    // Extract token from request
     const token = authHeader.split(' ')[1];
     if (!token) {
       throw new UnauthorizedException('Access token missing');
@@ -32,12 +32,12 @@ export class IsAdminMiddleware implements NestMiddleware {
       throw new UnauthorizedException('Invalid access token');
     }
 
+    // Store payload at req.user
     req['user'] = payload;
 
     const user = await this.userService.getOne(payload.sub);
     if (!user) throw new UnauthorizedException('User not found');
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (user.role === AuthRole.USER) {
       throw new ForbiddenException('You do not have access to this route');
     }

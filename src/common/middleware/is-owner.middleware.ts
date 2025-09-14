@@ -14,11 +14,12 @@ export class IsOwnerMiddleware implements NestMiddleware {
   constructor(private readonly userService: UserService) {}
 
   async use(req: Request, res: Response, next: NextFunction) {
+    // Get header request that client/user sent in request
     const authHeader = req.headers['authorization'];
     if (!authHeader) {
       throw new UnauthorizedException('No authorization header provided');
     }
-
+    // Extract token from request
     const token = authHeader.split(' ')[1];
     if (!token) {
       throw new UnauthorizedException('Access token missing');
@@ -31,6 +32,7 @@ export class IsOwnerMiddleware implements NestMiddleware {
       throw new UnauthorizedException('Invalid access token');
     }
 
+    // Store payload at req.user
     req['user'] = payload;
 
     const user = await this.userService.getOne(payload.sub);
