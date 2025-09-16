@@ -1,9 +1,11 @@
 import { Body, Controller, Patch, Req, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { WalletService } from './wallet.service';
 import { WalletAmountDto } from './dto/wallet-amount.dto';
 
+@ApiBearerAuth()
 @Controller(`v${process.env.VERSION}/wallet`)
 @UseGuards(AuthGuard('jwt-access'))
 export class WalletController {

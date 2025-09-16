@@ -9,10 +9,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { ReserveService } from './reserve.service';
 import { Reserve } from './reserve.entity';
 
+@ApiBearerAuth()
 @Controller(`v${process.env.VERSION}/reserve`)
 @UseGuards(AuthGuard('jwt-access'))
 export class ReserveController {

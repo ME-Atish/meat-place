@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -22,6 +23,7 @@ import { VerifyEmailCodeDto } from './dto/verify-email-code.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiBearerAuth()
   @Get()
   @UseGuards(AccessTokenGuard)
   @Get('/me')
@@ -51,6 +53,7 @@ export class AuthController {
     return this.authService.login(loginUserDto);
   }
 
+  @ApiBearerAuth()
   @UseGuards(RefreshTokenGuard)
   @Post('/refresh-token')
   @HttpCode(200)
@@ -59,6 +62,7 @@ export class AuthController {
     return this.authService.refreshToken(user);
   }
 
+  @ApiBearerAuth()
   @UseGuards(AccessTokenGuard)
   @Post('/logout')
   @HttpCode(204)

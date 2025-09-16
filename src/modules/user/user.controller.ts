@@ -11,11 +11,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { UserService } from './user.service';
 import { User } from 'src/modules/auth/user.entity';
 import { CreateUserDto } from 'src/modules/auth/dto/create-user.dto';
 
+@ApiBearerAuth()
 @Controller(`v${process.env.VERSION}/user`)
 @UseGuards(AuthGuard('jwt-access'))
 export class UserController {

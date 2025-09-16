@@ -14,12 +14,14 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { PlaceService } from './place.service';
 import { Place } from './place.entity';
 import { CreatePlaceDto } from 'src/modules/place/dto/create-place.dto';
 import { FileValidationPipe } from 'src/common/pipes/file-validation.pipe';
 
+@ApiBearerAuth()
 @Controller(`v${process.env.VERSION}/place`)
 @UseGuards(AuthGuard('jwt-access'))
 export class PlaceController {
