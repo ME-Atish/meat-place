@@ -6,11 +6,8 @@ import { Reserve } from '../modules/reserve/reserve.entity';
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT || '5432'),
-  username: process.env.DB_USERNAME || 'postgres',
-  password: process.env.DB_PASSWORD || 'postgres',
-  database: process.env.DB_NAME || 'place',
+  url: process.env.DATABASE_URL, // Neon connection string
+  ssl: { rejectUnauthorized: false }, // Neon requires SSL
   entities: [User, Place, Wallet, Reserve],
-  synchronize: false, // Just allowed in development
+  synchronize: false, // Keep false in production, use migrations instead
 });
