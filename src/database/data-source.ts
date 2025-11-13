@@ -12,5 +12,5 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD || 'postgres',
   database: process.env.DB_NAME || 'place',
   entities: [User, Place, Wallet, Reserve],
-  synchronize: true, // Just allowed in development
+  synchronize: false, // Just allowed in development
 });
