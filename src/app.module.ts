@@ -50,9 +50,12 @@ export class AppModule implements NestModule {
     consumer
       .apply(IsOwnerMiddleware)
       .exclude(
-        { path: `v${process.env.VERSION}/`, method: RequestMethod.GET },
-        { path: `v${process.env.VERSION}/:id`, method: RequestMethod.GET },
-        { path: `v${process.env.VERSION}/`, method: RequestMethod.POST },
+        { path: `v${process.env.VERSION}/place`, method: RequestMethod.GET },
+        {
+          path: `v${process.env.VERSION}/place/:id`,
+          method: RequestMethod.GET,
+        },
+        { path: `v${process.env.VERSION}/place`, method: RequestMethod.POST },
       )
       .forRoutes(PlaceController);
 
