@@ -10,9 +10,9 @@ import {
 
 import { AuthRole } from './enums/auth-role.enum';
 import { AuthProvider } from './enums/auth-provider.enum';
-import { Place } from 'src/modules/place/place.entity';
-import { Wallet } from 'src/modules/wallet/wallet.entity';
-import { Reserve } from 'src/modules/reserve/reserve.entity';
+import { Place } from '../place/place.entity';
+import { Wallet } from '../wallet/wallet.entity';
+import { Reserve } from '../reserve/reserve.entity';
 
 @Entity()
 export class User {
