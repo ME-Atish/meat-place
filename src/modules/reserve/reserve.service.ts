@@ -12,6 +12,7 @@ import { Reserve } from './reserve.entity';
 import { Place } from 'src/modules/place/place.entity';
 import { User } from 'src/modules/auth/user.entity';
 import { Wallet } from 'src/modules/wallet/wallet.entity';
+import { CreateReserveDto } from './dto/create-reserve.dto';
 
 @Injectable()
 export class ReserveService {
@@ -37,7 +38,11 @@ export class ReserveService {
     return reserve;
   }
 
-  async reservePlace(placeId: string, userId: string): Promise<void> {
+  async reservePlace(
+    placeId: string,
+    userId: string,
+    createReserveDto: CreateReserveDto,
+  ): Promise<void> {
     // Find place for check somethings like is place exist or is place already reserved or not
     const placeInfo = await this.placeRepository.findOne({
       where: { id: placeId },
@@ -58,9 +63,13 @@ export class ReserveService {
     if (userInfo?.isReserved)
       throw new ConflictException('User already reserved place');
 
+    const { startDate, finishDate } = createReserveDto;
+
     const reserve = this.reserveRepository.create({
       place: placeInfo,
       user: userInfo,
+      startDate,
+      finishDate,
     });
 
     await this.reserveRepository.save(reserve);
@@ -130,7 +139,11 @@ export class ReserveService {
     return;
   }
 
-  async reservePlaceViaWallet(userId: string, placeId: string): Promise<void> {
+  async reservePlaceViaWallet(
+    userId: string,
+    placeId: string,
+    createReserveDto: CreateReserveDto,
+  ): Promise<void> {
     const findUserWallet = await this.walletRepository.findOne({
       where: {
         user: { id: userId },
@@ -188,9 +201,13 @@ export class ReserveService {
     await this.userRepository.save(findUser);
     await this.walletRepository.save(findUserWallet);
 
+    const { startDate, finishDate } = createReserveDto;
+
     const reserve = this.reserveRepository.create({
       place: findPlace,
       user: findUser,
+      startDate,
+      finishDate,
     });
 
     await this.reserveRepository.save(reserve);

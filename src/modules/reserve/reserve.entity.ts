@@ -1,4 +1,5 @@
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -13,6 +14,12 @@ import { Place } from 'src/modules/place/place.entity';
 export class Reserve {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @Column({ type: 'timestamp without time zone' })
+  startDate: Date;
+
+  @Column({ type: 'timestamp without time zone' })
+  finishDate: Date;
 
   @ManyToOne(() => Place, (place) => place.reserves, {
     eager: true,

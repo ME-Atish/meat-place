@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Delete,
   Get,
@@ -13,6 +14,7 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { ReserveService } from './reserve.service';
 import { Reserve } from './reserve.entity';
+import { CreateReserveDto } from './dto/create-reserve.dto';
 
 @ApiBearerAuth()
 @Controller(`v${process.env.VERSION}/reserve`)
@@ -38,18 +40,25 @@ export class ReserveController {
   @Post('/:placeId')
   reservePlace(
     @Req() req,
-    @Param('placeId', ParseUUIDPipe) placeId: string,
+    @Param('placeId', ParseUUIDPipe)
+    placeId: string,
+    @Body() createReserveDto: CreateReserveDto,
   ): Promise<void> {
     const userId = req.user.id;
-    return this.reserveService.reservePlace(placeId, userId);
+    return this.reserveService.reservePlace(placeId, userId, createReserveDto);
   }
 
   @Post('/via-wallet/:id')
   reservePlaceViaWallet(
     @Req() req,
     @Param('id') placeId: string,
+    @Body() createReserveDto: CreateReserveDto,
   ): Promise<void> {
     const userId = req.user.id;
-    return this.reserveService.reservePlaceViaWallet(userId, placeId);
+    return this.reserveService.reservePlaceViaWallet(
+      userId,
+      placeId,
+      createReserveDto,
+    );
   }
 }
