@@ -25,8 +25,13 @@ export class Place {
   @Column()
   description: string;
 
-  @Column()
-  facilities: string;
+  @Column({ type: 'jsonb', nullable: true })
+  facilities: {
+    pool: boolean;
+    bathrooms: number;
+    bedrooms: number;
+    totalArea: number;
+  };
 
   @Column({ unsigned: true })
   price: number;
